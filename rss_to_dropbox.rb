@@ -78,13 +78,16 @@ podcast_episodes[start_idx..end_idx].each_with_index do |episode, idx|
       progress_proc: lambda do |progress|
         break if progress == total_size
 
-        progressbar.progress = (progress.to_f / total_size) * 100
+        progressbar.progress = (progress.to_f / total_size) * 10
       end
     )
 
     # TODO: better file naming
     # filename = "#{folder_path}/#{idx+1}.mp3",
     filename = "#{folder_path}/#{tempfile.original_filename}"
+
+    puts ''
+    puts "Starting upload to #{filename}"
 
     client.upload_by_chunks(
       filename,
@@ -103,5 +106,5 @@ podcast_episodes[start_idx..end_idx].each_with_index do |episode, idx|
 end
 
 if !skipped.empty?
-  puts "Skipped ${skipped} -- try redownloading some other time, ya dumb!"
+  puts "Skipped #{skipped} -- try redownloading some other time, ya dumb!"
 end
